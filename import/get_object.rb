@@ -20,7 +20,13 @@ def get_json(url)
 	rescue OpenURI::HTTPError
 		return nil
 	end
-	return JSON.parse(object.read, :symbolize_names => true)
+
+	begin
+		hash = JSON.parse(object.read, :symbolize_names => true)
+	rescue NoMethodError
+		raise Parallel::Break
+	end
+	return hash
 end
 
 # Fix up the raw hash provided by the V&A
