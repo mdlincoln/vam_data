@@ -16,10 +16,11 @@ load "import/resume_at.rb"
 coll = Mongo::MongoClient.new['va']['objects']
 start = resume_at(coll)
 puts "Starting at O#{start}"
+total_records = 1290000
 
-obj_numbers = (start...1290000)
+obj_numbers = (start...total_records)
 
-prog_bar = ProgressBar.create(:title => "Files imported", :starting_at => start, :total => 129000, :format => '%c |%b>>%i| %p%%')	# => Create a progress bar
+prog_bar = ProgressBar.create(:title => "Files imported", :starting_at => start, :total => total_records, :format => '%c |%b>>%i| %p%% %e')	# => Create a progress bar
 
 # Download files in parallel
 Parallel.map_with_index(obj_numbers, :in_process => 8, :finish => lambda { |item, i, result| prog_bar.increment }) do |num|
