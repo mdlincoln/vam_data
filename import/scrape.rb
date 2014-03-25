@@ -25,5 +25,5 @@ prog_bar = ProgressBar.create(:title => "Files imported", :starting_at => start,
 # Download files in parallel
 Parallel.map_with_index(obj_numbers, :in_process => 8, :finish => lambda { |item, i, result| prog_bar.increment }) do |num|
 	url = "http://www.vam.ac.uk/api/json/museumobject/O#{num}"
-	coll.insert(get_object_hash(url))
+	coll.save(get_object_hash(url))
 end
